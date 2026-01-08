@@ -1,0 +1,121 @@
+import { useEffect, useState, useContext } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import config from '../config';
+import CartContext from '../context/CartContext';
+import { useLanguage } from '../context/LanguageContext';
+
+const ProductListPage = () => {
+    const [products, setProducts] = useState([]);
+    const [searchParams] = useSearchParams();
+    const { addToCart } = useContext(CartContext);
+    const { t } = useLanguage();
+    const search = searchParams.get('search') || '';
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const res = await fetch(`${config.API_URL}/api/products?t=${Date.now()}`);
+                const data = await res.json();
+                console.log("ProductList: Fetched Products", data.length);
+                if (data.length > 0) {
+                    console.log("ProductList: First Product ID:", data[0]._id);
+                    console.log("ProductList: Sample Link URL:", `/product/${data[0]._id}`);
+                }
+                setProducts(data);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        };
+        fetchProducts();
+    }, []);
+
+    const handleQuickAdd = (e, product) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("ProductList: Quick Add Clicked for", product.name);
+        addToCart(product, 1);
+        alert(`${product.name} ${t('products.added_to_cart')}`);
+    };
+
+    const filteredProducts = products.filter(p =>
+        p.name.toLowerCase().includes(search.toLowerCase()) ||
+        p.category.toLowerCase().includes(search.toLowerCase())
+    );
+
+    return (
+        <div className="space-y-12 pb-20">
+            <header className="text-center md:text-left space-y-4 pt-4 md:pt-8">
+                <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-green-950 tracking-tighter leading-tight px-2 md:px-0">
+                    {t('products.title_main')} <span className="text-green-600 italic">{t('products.title_italic')}</span>
+                </h1>
+                <p className="text-lg md:text-xl text-gray-500 font-medium max-w-2xl px-4 md:px-0 mx-auto md:mx-0">
+                    {t('products.subtitle')}
+                </p>
+            </header>
+
+            <div className="h-1 bg-green-600/10 rounded-full w-24"></div>
+
+            {filteredProducts.length === 0 ? (
+                <div className="text-center py-20 glass rounded-[2.5rem] space-y-4">
+                    <span className="text-6xl">🔍</span>
+                    <h2 className="text-2xl font-bold text-gray-800">{t('products.no_found')}</h2>
+                    <p className="text-gray-500">{t('products.search_something')}</p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                    {filteredProducts.map((product) => (
+                        <Link key={product._id} to={`/product/${product._id}`} className="group relative bg-white rounded-[2.5rem] overflow-hidden shadow-soft hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col h-full animate-fade-in-up">
+                            <div className="relative h-72 overflow-hidden">
+                                <img
+                                    src={product.image}
+                                    alt={product.name}
+                                    className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 font-bold"
+                                />
+                                <div className="absolute top-6 left-6 flex flex-col gap-2">
+                                    <div className="glass px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-green-900 flex items-center gap-1.5 shadow-sm">
+                                        <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                                        {product.category}
+                                    </div>
+                                    {product.isSeasonal && (
+                                        <div className="bg-orange-500 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm">
+                                            {t('product_detail.limitless')}
+                                        </div>
+                                    )}
+                                </div>
+                                <button
+                                    onClick={(e) => handleQuickAdd(e, product)}
+                                    className="absolute bottom-6 right-6 bg-green-600 text-white p-4 rounded-2xl shadow-xl transform translate-y-20 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 hover:bg-green-700 scale-110 active:scale-95"
+                                    title={t('products.quick_add')}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div className="p-8 flex flex-col flex-grow space-y-4">
+                                <div>
+                                    <h3 className="font-extrabold text-2xl text-green-950 tracking-tighter group-hover:text-green-600 transition truncate">{product.name}</h3>
+                                    <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mt-1">{t('products.source')}: {product.source || 'Direct Farm'}</p>
+                                </div>
+
+                                <div className="mt-auto pt-6 flex items-center justify-between border-t border-gray-50">
+                                    <div className="flex flex-col">
+                                        <span className="text-gray-400 text-[10px] font-black uppercase tracking-widest">{t('products.village_price')}</span>
+                                        <span className="text-3xl font-black text-green-700 tracking-tighter">₹{product.price}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1 bg-yellow-50 px-3 py-1.5 rounded-full">
+                                        <span className="text-yellow-500 text-xs font-black">★</span>
+                                        <span className="text-yellow-700 text-xs font-black">{product.rating || '4.5'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default ProductListPage;
