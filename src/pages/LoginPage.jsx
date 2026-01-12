@@ -137,3 +137,21 @@ const LoginPage = () => {
 
 export default LoginPage;
 
+const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        // Error tab aata hai jab response.json() khali hota hai
+        const data = await response.json(); 
+        console.log(data);
+    } catch (error) {
+        console.error("Login Error:", error);
+    }
+};
