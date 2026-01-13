@@ -137,21 +137,22 @@ const LoginPage = () => {
 
 export default LoginPage;
 
+// Pehle check karein ki base URL ke end mein '/' toh nahi hai
+const BASE_URL = "https://dharti-ka-swad.up.railway.app"; 
+
 const handleLogin = async (e) => {
     e.preventDefault();
     try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/login`, {
+        // Poora path sahi se likhein: BASE_URL + /api/users/login
+        const response = await fetch(`${BASE_URL}/api/users/login`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
         });
 
-        // Error tab aata hai jab response.json() khali hota hai
-        const data = await response.json(); 
+        const data = await response.json();
         console.log(data);
     } catch (error) {
-        console.error("Login Error:", error);
+        console.error("Dhyan dein! Error yahan hai:", error);
     }
 };
