@@ -4,10 +4,16 @@ const Payment = require('../models/Payment');
 const Order = require('../models/Order');
 const asyncHandler = require('express-async-handler');
 
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+// Initialize Razorpay only if keys are present to prevent server crash in Demo Mode
+let razorpay = null;
+if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
+    razorpay = new Razorpay({
+        key_id: process.env.RAZORPAY_KEY_ID,
+        key_secret: process.env.RAZORPAY_KEY_SECRET,
+    });
+} else {
+    console.warn('RAZORPAY_KEY_ID or SECRET missing. Payment features will be in Demo Mode.');
+}
 
 // @desc    Create Razorpay Order
 // @route   POST /api/payment/create-order
@@ -20,6 +26,16 @@ const createOrder = asyncHandler(async (req, res) => {
         currency: currency || 'INR',
         receipt: receipt || `receipt_${Date.now()}`,
     };
+
+    if (!razorpay) {
+        // Fallback for Demo Mode: simulate a razorpay order
+        return res.json({
+            id: `order_demo_${Date.now()}`,
+            amount: options.amount,
+            currency: options.currency,
+            demo: true
+        });
+    }
 
     const order = await razorpay.orders.create(options);
     res.json(order);
