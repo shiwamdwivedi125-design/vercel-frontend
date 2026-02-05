@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 import emailjs from '@emailjs/browser';
 import config from '../config';
 import { useLanguage } from '../context/LanguageContext';
@@ -129,6 +130,20 @@ const ContactPage = () => {
                     {t('contact.send')}
                 </button>
             </form>
+
+            <div className="mt-12 pt-8 border-t border-gray-100">
+                <h3 className="text-lg font-bold text-gray-800 mb-4 text-center">{t('contact.connect_with_us') || 'Connect with us on Social Media'}</h3>
+                <div className="flex justify-center gap-6">
+                    <a
+                        href={config.TWITTER_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-black text-white px-6 py-2 rounded-full font-bold hover:bg-gray-800 transition shadow-lg"
+                    >
+                        <FaXTwitter /> <span>Twitter / X</span>
+                    </a>
+                </div>
+            </div>
         </div>
     );
 };
