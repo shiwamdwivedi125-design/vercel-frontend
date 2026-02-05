@@ -59,20 +59,15 @@ const path = require('path');
 app.use('/uploads', express.static(path.join(__dirname, '../frontend/public/images')));
 
 // 5. Deployment Logic
-if (process.env.NODE_ENV === 'production') {
-    // __dirname is backend folder, so we go up one level to reach frontend/dist
-    const distPath = path.join(__dirname, '../frontend/dist');
-    app.use(express.static(distPath));
+// Serve frontend static files
+const distPath = path.join(__dirname, '../frontend/dist');
+app.use(express.static(distPath));
 
-    app.get('*', (req, res) =>
-        res.sendFile(path.join(distPath, 'index.html'))
-    );
-} else {
-    // Main Page Route for dev
-    app.get('/', (req, res) => {
-        res.json({ message: 'Dharti Ka Swad Backend is running live!' });
-    });
-}
+// All other routes serve index.html (for SPA routing)
+app.get('*', (req, res) => {
+    const indexPath = path.join(distPath, 'index.html');
+    res.sendFile(indexPath);
+});
 
 // 404 Route (only reached in dev or if not static file)
 app.use((req, res) => {
