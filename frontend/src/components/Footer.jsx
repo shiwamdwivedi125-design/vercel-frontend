@@ -1,5 +1,6 @@
-import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaTwitter, FaXTwitter } from 'react-icons/fa6';
 import { useLanguage } from '../context/LanguageContext';
+import config from '../config';
 
 const Footer = () => {
     const { t } = useLanguage();
@@ -35,7 +36,7 @@ const Footer = () => {
                     <div className="flex space-x-4">
                         <a href="https://www.facebook.com/share/16viNYGNz2/" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-all"><FaFacebook className="text-xl" /></a>
                         <a href="https://www.instagram.com/shiwamdwivedi96?igsh=aG1qajcwbTYzam9k" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-all"><FaInstagram className="text-xl" /></a>
-                        <a href="#" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-all"><FaTwitter className="text-xl" /></a>
+                        <a href={config.TWITTER_URL} target="_blank" rel="noopener noreferrer" className="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-all"><FaXTwitter className="text-xl" /></a>
                     </div>
                     <div>
                         <p className="text-xs text-green-100/40 uppercase tracking-widest font-bold">{t('footer.inquiries') || 'Inquiries'}</p>
