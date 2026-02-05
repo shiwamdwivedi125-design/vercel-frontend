@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import config from '../config';
 import CartContext from '../context/CartContext';
 import { useLanguage } from '../context/LanguageContext';
+import { mockProducts, mockFarmers } from '../data/mockData'; // Import Mock Data
 
 const ProductDetailPage = () => {
     const { id } = useParams();
@@ -28,8 +29,17 @@ const ProductDetailPage = () => {
                 const data = await res.json();
                 setProduct(data);
             } catch (err) {
-                setError(err.message === 'Product not found' ? t('product_detail.not_found') : err.message);
-                console.error("Product Load Error:", err);
+                console.error("Product Load Error (Checking Demo Data):", err);
+                // Fallback to Mock Data
+                const foundProduct = mockProducts.find(p => p._id === id);
+                if (foundProduct) {
+                    // Enrich with farmer details if just ID
+                    const farmer = mockFarmers.find(f => f._id === foundProduct.farmer);
+                    setProduct({ ...foundProduct, farmer: farmer || foundProduct.farmer });
+                    setError(null);
+                } else {
+                    setError(err.message === 'Product not found' ? t('product_detail.not_found') : err.message);
+                }
             } finally {
                 setLoading(false);
             }

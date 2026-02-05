@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import config from '../config';
 import CartContext from '../context/CartContext';
 import { useLanguage } from '../context/LanguageContext';
+import { mockProducts } from '../data/mockData'; // Import Mock Data
 
 const ProductListPage = () => {
     const [products, setProducts] = useState([]);
@@ -15,15 +16,17 @@ const ProductListPage = () => {
         const fetchProducts = async () => {
             try {
                 const res = await fetch(`${config.API_URL}/api/products?t=${Date.now()}`);
+                if (!res.ok) throw new Error('API Error');
                 const data = await res.json();
-                console.log("ProductList: Fetched Products", data.length);
+
                 if (data.length > 0) {
-                    console.log("ProductList: First Product ID:", data[0]._id);
-                    console.log("ProductList: Sample Link URL:", `/product/${data[0]._id}`);
+                    setProducts(data);
+                } else {
+                    setProducts(mockProducts); // Fallback
                 }
-                setProducts(data);
             } catch (error) {
-                console.error('Error fetching products:', error);
+                console.error('Error fetching products (Using Demo Data):', error);
+                setProducts(mockProducts); // Fallback
             }
         };
         fetchProducts();
@@ -37,10 +40,14 @@ const ProductListPage = () => {
         alert(`${product.name} ${t('products.added_to_cart')}`);
     };
 
-    const filteredProducts = products.filter(p =>
-        p.name.toLowerCase().includes(search.toLowerCase()) ||
-        p.category.toLowerCase().includes(search.toLowerCase())
-    );
+    const [showBudget, setShowBudget] = useState(false);
+
+    const filteredProducts = products.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) ||
+            p.category.toLowerCase().includes(search.toLowerCase());
+        const matchesBudget = showBudget ? p.price <= 100 : true;
+        return matchesSearch && matchesBudget;
+    });
 
     return (
         <div className="space-y-12 pb-20">
@@ -51,6 +58,12 @@ const ProductListPage = () => {
                 <p className="text-lg md:text-xl text-gray-500 font-medium max-w-2xl px-4 md:px-0 mx-auto md:mx-0">
                     {t('products.subtitle')}
                 </p>
+                <button
+                    onClick={() => setShowBudget(!showBudget)}
+                    className={`mt-4 px-6 py-3 rounded-full font-bold transition flex items-center gap-2 mx-auto md:mx-0 shadow-lg ${showBudget ? 'bg-green-600 text-white' : 'bg-white text-green-700 border border-green-200 hover:bg-green-50'}`}
+                >
+                    💰 {showBudget ? 'Disable Budget Mode' : 'Enable Student Budget Mode (Under ₹100)'}
+                </button>
             </header>
 
             <div className="h-1 bg-green-600/10 rounded-full w-24"></div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import config from '../config';
 import { useLanguage } from '../context/LanguageContext';
+import { mockFarmers } from '../data/mockData'; // Import Mock Data
 
 const FarmersPage = () => {
     const [farmers, setFarmers] = useState([]);
@@ -11,10 +12,17 @@ const FarmersPage = () => {
         const fetchFarmers = async () => {
             try {
                 const res = await fetch(`${config.API_URL}/api/farmers`);
+                if (!res.ok) throw new Error('API Error');
                 const data = await res.json();
-                setFarmers(data);
+
+                if (data.length > 0) {
+                    setFarmers(data);
+                } else {
+                    setFarmers(mockFarmers); // Fallback
+                }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error fetching farmers (Using Demo Data):', error);
+                setFarmers(mockFarmers); // Fallback to Demo Data
             } finally {
                 setLoading(false);
             }

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import config from '../config';
 import CartContext from '../context/CartContext';
 import { useLanguage } from '../context/LanguageContext';
+import { mockProducts } from '../data/mockData'; // Import Mock Data
 
 const HomePage = () => {
     const [products, setProducts] = useState([]);
@@ -13,11 +14,19 @@ const HomePage = () => {
         const fetchProducts = async () => {
             try {
                 const res = await fetch(`${config.API_URL}/api/products?t=${Date.now()}`);
+                if (!res.ok) throw new Error('Network response was not ok');
                 const data = await res.json();
-                // Show newest items first
-                setProducts(data.reverse());
+
+                if (data.length > 0) {
+                    setProducts(data.reverse());
+                } else {
+                    // Fallback to Mock Data if DB is empty
+                    console.log("Database empty, using Demo Data");
+                    setProducts(mockProducts);
+                }
             } catch (error) {
-                console.error('Error fetching products:', error);
+                console.error('Error fetching products (Using Demo Data):', error);
+                setProducts(mockProducts); // Fallback to Mock Data on Error
             }
         };
         fetchProducts();
@@ -74,6 +83,51 @@ const HomePage = () => {
                                 alt="Dharti Hero"
                                 className="relative w-full drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)] transform hover:scale-105 transition-transform duration-700 hover:rotate-2"
                             />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* 🤖 AI Chef Recommendation Section */}
+            <section className="container mx-auto px-4 !mt-12">
+                <div className="bg-gradient-to-r from-green-900 to-green-800 rounded-[3rem] p-8 md:p-12 relative overflow-hidden shadow-2xl border border-white/10 group">
+                    <div className="absolute top-0 right-0 w-96 h-96 bg-green-500 rounded-full blur-[150px] opacity-20 group-hover:opacity-30 transition duration-1000"></div>
+                    <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
+                        <div className="md:w-1/2 space-y-6 text-center md:text-left">
+                            <div className="inline-flex items-center gap-2 px-4 py-1 bg-white/10 rounded-full text-green-300 font-bold text-xs uppercase tracking-widest border border-white/5 mx-auto md:mx-0">
+                                <span className="animate-pulse">🤖</span> AI Chef Intelligence
+                            </div>
+                            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-tight">
+                                "Its {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 17 ? 'Afternoon' : 'Evening'}!" <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-emerald-300">
+                                    Time for {new Date().getHours() < 12 ? 'Healthy Breakfast' : new Date().getHours() < 17 ? 'Power Lunch' : 'Light Dinner'}?
+                                </span>
+                            </h2>
+                            <p className="text-green-100/80 text-lg font-medium leading-relaxed">
+                                Our AI analyzed the weather and time. Based on your location, we recommend these fresh, organic picks for you right now.
+                            </p>
+                            <Link to="/products?filter=budget">
+                                <button className="mt-4 bg-white text-green-900 px-8 py-4 rounded-full font-black shadow-lg hover:bg-green-50 transition transform hover:-translate-y-1">
+                                    View AI Menu ✨
+                                </button>
+                            </Link>
+                        </div>
+                        <div className="md:w-1/2 flex gap-4 overflow-x-auto pb-4 md:pb-0 scrollbar-hide justify-center md:justify-start">
+                            {[
+                                { name: "Masala Dosa", price: 80, tag: "Best for Breakfast" },
+                                { name: "Fresh Juice", price: 40, tag: "Hydration" }
+                            ].map((item, i) => (
+                                <div key={i} className="flex-shrink-0 w-60 bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10 hover:bg-white/20 transition cursor-pointer">
+                                    <div className="h-32 bg-black/20 rounded-2xl mb-4 relative overflow-hidden flex items-center justify-center text-4xl">
+                                        🍽️
+                                    </div>
+                                    <div className="space-y-1 text-left">
+                                        <div className="text-xs font-bold text-green-300 uppercase tracking-widest">{item.tag}</div>
+                                        <h3 className="text-xl font-bold text-white">{item.name}</h3>
+                                        <div className="text-2xl font-black text-green-400">₹{item.price}</div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

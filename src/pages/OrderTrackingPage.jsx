@@ -14,21 +14,35 @@ const OrderTrackingPage = () => {
 
     useEffect(() => {
         const fetchOrder = async () => {
+            const token = userInfo?.token || 'mock-token';
+            const demoOrders = JSON.parse(localStorage.getItem('demoOrders') || '[]');
+
             try {
                 const { data } = await axios.get(`${config.API_URL}/api/orders/${id}`, {
-                    headers: { Authorization: `Bearer ${userInfo.token}` }
+                    headers: { Authorization: `Bearer ${token}` }
                 });
                 setOrder(data);
             } catch (err) {
-                setError(err.response?.data?.message || err.message);
+                console.error('Error fetching order (Checking Demo Orders):', err);
+                // Fallback to demo orders
+                const foundOrder = demoOrders.find(o => o._id === id);
+                if (foundOrder) {
+                    // Enrich with mock user if needed
+                    const enrichedOrder = {
+                        ...foundOrder,
+                        user: foundOrder.user || { name: userInfo?.name || 'Demo User' }
+                    };
+                    setOrder(enrichedOrder);
+                    setError(null);
+                } else {
+                    setError(err.response?.data?.message || err.message);
+                }
             } finally {
                 setLoading(false);
             }
         };
 
-        if (userInfo) {
-            fetchOrder();
-        }
+        fetchOrder();
     }, [id, userInfo]);
 
     if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;

@@ -27,11 +27,8 @@ const MyOrdersPage = () => {
 
     useEffect(() => {
         const fetchOrders = async () => {
-            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            if (!userInfo) {
-                setLoading(false);
-                return;
-            }
+            const userInfo = JSON.parse(localStorage.getItem('userInfo')) || { token: 'mock-token' };
+            const demoOrders = JSON.parse(localStorage.getItem('demoOrders') || '[]');
 
             try {
                 const response = await fetch(`${config.API_URL}/api/orders/myorders`, {
@@ -41,15 +38,17 @@ const MyOrdersPage = () => {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Failed to fetch orders');
+                    throw new Error('API Error');
                 }
 
                 const data = await response.json();
-                // Sort by date (newest first)
-                data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                setOrders(data);
+                // Combine with demo orders
+                const totalOrders = [...data, ...demoOrders];
+                totalOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setOrders(totalOrders);
             } catch (err) {
-                setError(err.message);
+                console.error('Error fetching orders (Showing Demo Orders):', err);
+                setOrders(demoOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             } finally {
                 setLoading(false);
             }

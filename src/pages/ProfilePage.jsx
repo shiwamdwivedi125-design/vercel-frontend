@@ -1,13 +1,21 @@
+import { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import AuthContext from '../context/AuthContext';
 
 const ProfilePage = () => {
     const { userInfo, updateProfile } = useContext(AuthContext);
     const { t } = useLanguage();
 
-    React.useEffect(() => {
-        updateProfile();
-    }, []);
+    useEffect(() => {
+        if (updateProfile) {
+            try {
+                updateProfile();
+            } catch (err) {
+                console.error("Profile update failed (Using Demo Data):", err);
+            }
+        }
+    }, [updateProfile]);
 
     if (!userInfo) {
         return (
