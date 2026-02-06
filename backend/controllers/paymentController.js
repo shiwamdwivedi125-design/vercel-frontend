@@ -4,15 +4,24 @@ const Payment = require('../models/Payment');
 const Order = require('../models/Order');
 const asyncHandler = require('express-async-handler');
 
-// Initialize Razorpay only if keys are present to prevent server crash in Demo Mode
+// Initialize Razorpay only if keys are present and not placeholders to prevent server crash
 let razorpay = null;
-if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
-    razorpay = new Razorpay({
-        key_id: process.env.RAZORPAY_KEY_ID,
-        key_secret: process.env.RAZORPAY_KEY_SECRET,
-    });
-} else {
-    console.warn('RAZORPAY_KEY_ID or SECRET missing. Payment features will be in Demo Mode.');
+try {
+    const keyId = process.env.RAZORPAY_KEY_ID;
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+
+    if (keyId && keySecret && keyId.trim() !== '' && keySecret.trim() !== '') {
+        razorpay = new Razorpay({
+            key_id: keyId,
+            key_secret: keySecret,
+        });
+        console.log('✅ Razorpay initialized successfully');
+    } else {
+        console.warn('⚠️ RAZORPAY_KEY_ID or SECRET missing/empty. Using Demo Mode for payments.');
+    }
+} catch (error) {
+    console.error('❌ Error initializing Razorpay:', error.message);
+    razorpay = null;
 }
 
 // @desc    Create Razorpay Order
