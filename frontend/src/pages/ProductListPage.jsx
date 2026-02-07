@@ -52,15 +52,15 @@ const ProductListPage = () => {
     return (
         <div className="space-y-12 pb-20">
             <header className="text-center md:text-left space-y-4 pt-4 md:pt-8">
-                <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-green-950 tracking-tighter leading-tight px-2 md:px-0">
+                <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-green-950 dark:text-white tracking-tighter leading-tight px-2 md:px-0">
                     {t('products.title_main')} <span className="text-green-600 italic">{t('products.title_italic')}</span>
                 </h1>
-                <p className="text-lg md:text-xl text-gray-500 font-medium max-w-2xl px-4 md:px-0 mx-auto md:mx-0">
+                <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 font-medium max-w-2xl px-4 md:px-0 mx-auto md:mx-0">
                     {t('products.subtitle')}
                 </p>
                 <button
                     onClick={() => setShowBudget(!showBudget)}
-                    className={`mt-4 px-6 py-3 rounded-full font-bold transition flex items-center gap-2 mx-auto md:mx-0 shadow-lg ${showBudget ? 'bg-green-600 text-white' : 'bg-white text-green-700 border border-green-200 hover:bg-green-50'}`}
+                    className={`mt-4 px-6 py-3 rounded-full font-bold transition flex items-center gap-2 mx-auto md:mx-0 shadow-lg ${showBudget ? 'bg-green-600 text-white' : 'bg-white dark:bg-gray-800 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-700 hover:bg-green-50 dark:hover:bg-gray-700'}`}
                 >
                     💰 {showBudget ? 'Disable Budget Mode' : 'Enable Student Budget Mode (Under ₹100)'}
                 </button>
@@ -71,14 +71,14 @@ const ProductListPage = () => {
             {filteredProducts.length === 0 ? (
                 <div className="text-center py-20 glass rounded-[2.5rem] space-y-4">
                     <span className="text-6xl">🔍</span>
-                    <h2 className="text-2xl font-bold text-gray-800">{t('products.no_found')}</h2>
-                    <p className="text-gray-500">{t('products.search_something')}</p>
+                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white">{t('products.no_found')}</h2>
+                    <p className="text-gray-500 dark:text-gray-400">{t('products.search_something')}</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-10">
                     {filteredProducts.map((product) => (
-                        <Link key={product._id} to={`/product/${product._id}`} className="group relative bg-white rounded-[2.5rem] overflow-hidden shadow-soft hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col h-full animate-fade-in-up">
-                            <div className="relative h-72 overflow-hidden">
+                        <Link key={product._id} to={`/product/${product._id}`} className="group relative bg-white dark:bg-gray-800 rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-soft hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-700 flex flex-col h-full animate-fade-in-up mx-2 md:mx-0">
+                            <div className="relative aspect-square overflow-hidden">
                                 <img
                                     src={product.image}
                                     alt={product.name}
@@ -106,18 +106,18 @@ const ProductListPage = () => {
                                 </button>
                             </div>
 
-                            <div className="p-8 flex flex-col flex-grow space-y-4">
+                            <div className="p-4 md:p-8 flex flex-col flex-grow space-y-4">
                                 <div>
-                                    <h3 className="font-extrabold text-2xl text-green-950 tracking-tighter group-hover:text-green-600 transition truncate">{product.name}</h3>
-                                    <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mt-1">{t('products.source')}: {product.source || 'Direct Farm'}</p>
+                                    <h3 className="font-extrabold text-2xl text-green-950 dark:text-white tracking-tighter group-hover:text-green-600 transition truncate">{product.name}</h3>
+                                    <p className="text-gray-400 dark:text-gray-500 text-xs font-bold uppercase tracking-wider mt-1">{t('products.source')}: {product.source || 'Direct Farm'}</p>
                                 </div>
 
-                                <div className="mt-auto pt-6 flex items-center justify-between border-t border-gray-50">
+                                <div className="mt-auto pt-6 flex items-center justify-between border-t border-gray-50 dark:border-gray-700">
                                     <div className="flex flex-col">
                                         <span className="text-gray-400 text-[10px] font-black uppercase tracking-widest">{t('products.village_price')}</span>
                                         <span className="text-3xl font-black text-green-700 tracking-tighter">₹{product.price}</span>
                                     </div>
-                                    <div className="flex items-center gap-1 bg-yellow-50 px-3 py-1.5 rounded-full">
+                                    <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/30 px-3 py-1.5 rounded-full">
                                         <span className="text-yellow-500 text-xs font-black">★</span>
                                         <span className="text-yellow-700 text-xs font-black">{product.rating || '4.5'}</span>
                                     </div>

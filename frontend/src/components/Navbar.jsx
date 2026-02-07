@@ -1,15 +1,17 @@
 import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaShoppingCart, FaUser, FaBars, FaTimes, FaSignOutAlt, FaMicrophone, FaSearch, FaLanguage } from 'react-icons/fa';
+import { FaShoppingCart, FaUser, FaBars, FaTimes, FaSignOutAlt, FaMicrophone, FaSearch, FaLanguage, FaSun, FaMoon } from 'react-icons/fa';
 import AuthContext from '../context/AuthContext';
 import CartContext from '../context/CartContext';
 import { useLanguage } from '../context/LanguageContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { userInfo, logout } = useContext(AuthContext);
     const { cartItems } = useContext(CartContext);
     const { language, toggleLanguage, t } = useLanguage();
+    const { theme, toggleTheme } = useTheme();
     const [keyword, setKeyword] = useState('');
     const navigate = useNavigate();
 
@@ -126,6 +128,15 @@ const Navbar = () => {
                             </div>
                         )}
                     </div>
+
+                    {/* Dark Mode Toggle */}
+                    <button
+                        onClick={toggleTheme}
+                        className="flex items-center gap-1 bg-green-800 hover:bg-green-900 border border-green-600 px-2 py-1.5 rounded-lg transition text-white"
+                        title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+                    >
+                        {theme === 'light' ? <FaMoon size={18} /> : <FaSun size={18} />}
+                    </button>
 
                     {/* Language Toggle Button */}
                     <button

@@ -82,8 +82,8 @@ const ProductDetailPage = () => {
     if (error) return <div className="p-10 text-center text-red-500 font-bold">{error}</div>;
     if (!product) return (
         <div className="flex flex-col items-center justify-center min-h-[50vh] text-center space-y-4">
-            <h2 className="text-2xl font-bold text-gray-800">{t('product_detail.not_found')}</h2>
-            <p className="text-gray-600">{t('product_detail.removed')}</p>
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">{t('product_detail.not_found')}</h2>
+            <p className="text-gray-600 dark:text-gray-400">{t('product_detail.removed')}</p>
             <Link to="/" className="bg-green-600 text-white px-6 py-2 rounded-full font-bold hover:bg-green-700 transition">
                 {t('product_detail.return_home')}
             </Link>
@@ -91,16 +91,16 @@ const ProductDetailPage = () => {
     );
 
     return (
-        <div className="flex flex-col md:flex-row gap-8 max-w-6xl mx-auto p-4">
-            <div className="md:w-1/2">
-                <img src={product.image} alt={product.name} className="w-full rounded-2xl shadow-lg object-cover max-h-[500px]" />
+        <div className="flex flex-col md:flex-row gap-6 md:gap-8 max-w-6xl mx-auto md:p-4">
+            <div className="w-full md:w-1/2">
+                <img src={product.image} alt={product.name} className="w-full md:rounded-2xl shadow-lg object-cover aspect-square md:aspect-auto md:max-h-[500px]" />
             </div>
-            <div className="md:w-1/2 space-y-6">
+            <div className="w-full md:w-1/2 space-y-6 px-4 md:px-0 pb-10">
                 <div className="flex items-start justify-between">
                     <div>
-                        <h1 className="text-4xl font-bold text-gray-800">{product.name}</h1>
+                        <h1 className="text-4xl font-bold text-gray-800 dark:text-white">{product.name}</h1>
                         <div className="flex gap-2 mt-2">
-                            <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-semibold uppercase tracking-wide">
+                            <span className="bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 text-xs px-2 py-1 rounded-full font-semibold uppercase tracking-wide">
                                 {product.source || t('product_detail.farm_fresh')}
                             </span>
                             {product.isSeasonal && (
@@ -123,51 +123,51 @@ const ProductDetailPage = () => {
                     </div>
                 </div>
 
-                <p className="text-xl text-gray-500">
-                    {t('product_detail.by')} <span className="font-semibold text-green-700">{product.farmer?.name || 'Ram Singh'}</span>
+                <p className="text-xl text-gray-500 dark:text-gray-400">
+                    {t('product_detail.by')} <span className="font-semibold text-green-700 dark:text-green-500">{product.farmer?.name || 'Ram Singh'}</span>
                     {product.farmer?.village && <span> ({product.farmer.village})</span>}
                 </p>
 
                 {/* Farmer Story & Transparency Badge */}
-                <div className="flex items-center gap-4 bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100">
+                <div className="flex items-center gap-4 bg-white dark:bg-gray-800 p-6 rounded-[2rem] shadow-sm border border-gray-100 dark:border-gray-700">
                     <img
                         src={product.farmer?.image || '/images/default_farmer.jpg'}
                         alt={product.farmer?.name}
                         className="w-20 h-20 rounded-2xl object-cover border-2 border-green-100"
                     />
                     <div>
-                        <h3 className="font-black text-green-950 tracking-tighter">{t('product_detail.meet_farmer').replace('{name}', product.farmer?.name || 'Your Farmer')}</h3>
-                        <p className="text-green-600 text-xs font-bold uppercase tracking-widest">{t('products.source')}: {product.farmer?.village || 'Local Farm'}</p>
+                        <h3 className="font-black text-green-950 dark:text-white tracking-tighter">{t('product_detail.meet_farmer').replace('{name}', product.farmer?.name || 'Your Farmer')}</h3>
+                        <p className="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-widest">{t('products.source')}: {product.farmer?.village || 'Local Farm'}</p>
                     </div>
                 </div>
 
-                <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-4">
-                    <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                <div className="bg-white dark:bg-gray-800 p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm space-y-4">
+                    <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2">
                         <span className="text-xl">👩‍🌾</span> {t('product_detail.story')}
                     </h3>
-                    <p className="text-gray-600 font-medium italic leading-relaxed">
+                    <p className="text-gray-600 dark:text-gray-300 font-medium italic leading-relaxed">
                         "{product.farmer?.bio || product.story || "I have been growing organic food using traditional cow-based farming methods. This product is harvested fresh for you."}"
                     </p>
                     <div className="flex flex-wrap gap-2">
-                        <span className="bg-white px-3 py-1 rounded text-xs font-bold text-gray-500 border border-gray-200 shadow-sm">📍 {t('product_detail.verified')}</span>
-                        <span className="bg-white px-3 py-1 rounded text-xs font-bold text-gray-500 border border-gray-200 shadow-sm">🌱 {t('product_detail.no_chemicals')}</span>
-                        <span className="bg-white px-3 py-1 rounded text-xs font-bold text-gray-500 border border-gray-200 shadow-sm">🚜 {t('product_detail.traditional')}</span>
+                        <span className="bg-white dark:bg-gray-700 px-3 py-1 rounded text-xs font-bold text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-600 shadow-sm">📍 {t('product_detail.verified')}</span>
+                        <span className="bg-white dark:bg-gray-700 px-3 py-1 rounded text-xs font-bold text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-600 shadow-sm">🌱 {t('product_detail.no_chemicals')}</span>
+                        <span className="bg-white dark:bg-gray-700 px-3 py-1 rounded text-xs font-bold text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-600 shadow-sm">🚜 {t('product_detail.traditional')}</span>
                     </div>
                 </div>
 
                 {/* QR Traceability Mockup */}
-                <div className="border border-green-200 rounded-xl p-4 flex items-center gap-4 bg-green-50/50">
-                    <div className="bg-white p-2 rounded shadow-sm">
+                <div className="border border-green-200 dark:border-green-800 rounded-xl p-4 flex items-center gap-4 bg-green-50/50 dark:bg-green-900/20">
+                    <div className="bg-white dark:bg-gray-700 p-2 rounded shadow-sm">
                         <img src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=TraceabilityInfoFor_${product._id}`} alt="QR Code" className="w-16 h-16" />
                     </div>
                     <div>
-                        <p className="font-bold text-sm text-green-800">{t('product_detail.scan_trace')}</p>
-                        <p className="text-xs text-green-700 mt-1">{t('product_detail.trace_desc')}</p>
-                        <p className="text-xs text-gray-500 mt-1">{t('product_detail.harvested')}: {new Date().toLocaleDateString()}</p>
+                        <p className="font-bold text-sm text-green-800 dark:text-green-300">{t('product_detail.scan_trace')}</p>
+                        <p className="text-xs text-green-700 dark:text-green-400 mt-1">{t('product_detail.trace_desc')}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('product_detail.harvested')}: {new Date().toLocaleDateString()}</p>
                     </div>
                 </div>
 
-                <p className="text-gray-700 leading-relaxed text-lg">{product.description}</p>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">{product.description}</p>
 
                 {/* Nutrition Info */}
                 {product.nutrition && (
@@ -184,10 +184,10 @@ const ProductDetailPage = () => {
                 {/* Ingredients */}
                 {product.ingredients && product.ingredients.length > 0 && (
                     <div className="mt-2">
-                        <h4 className="font-semibold text-gray-700 mb-1">{t('product_detail.ingredients')}:</h4>
+                        <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-1">{t('product_detail.ingredients')}:</h4>
                         <div className="flex flex-wrap gap-2">
                             {product.ingredients.map((ing, index) => (
-                                <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-md border">{ing}</span>
+                                <span key={index} className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-md border dark:border-gray-600">{ing}</span>
                             ))}
                         </div>
                     </div>
@@ -195,8 +195,8 @@ const ProductDetailPage = () => {
 
                 {/* Authentic Village Recipe Video */}
                 {product.recipeUrl && (
-                    <div className="mt-8 pt-8 border-t border-gray-100">
-                        <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <div className="mt-8 pt-8 border-t border-gray-100 dark:border-gray-700">
+                        <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
                             <span className="text-red-600 text-2xl">📺</span>
                             {t('product_detail.authentic_recipe')}
                         </h3>
@@ -210,7 +210,7 @@ const ProductDetailPage = () => {
                                 allowFullScreen
                             ></iframe>
                         </div>
-                        <p className="mt-3 text-sm text-gray-500 italic flex items-center gap-2">
+                        <p className="mt-3 text-sm text-gray-500 dark:text-gray-400 italic flex items-center gap-2">
                             <span>✨</span> {t('product_detail.learn_tradition')}
                         </p>
                     </div>
@@ -222,7 +222,7 @@ const ProductDetailPage = () => {
                     {/* Spice Level */}
                     {product.customization?.spiceLevel && (
                         <div>
-                            <label className="block font-semibold text-gray-700 mb-2">{t('product_detail.spice_level')}:</label>
+                            <label className="block font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('product_detail.spice_level')}:</label>
                             <div className="flex gap-4">
                                 {['Low', 'Medium', 'High'].map(level => (
                                     <label key={level} className="flex items-center space-x-2 cursor-pointer">
@@ -233,7 +233,7 @@ const ProductDetailPage = () => {
                                             checked={spiceLevel === level}
                                             onChange={() => setSpiceLevel(level)}
                                         />
-                                        <span>{t(`product_detail.${level.toLowerCase()}`)}</span>
+                                        <span className="dark:text-gray-300">{t(`product_detail.${level.toLowerCase()}`)}</span>
                                     </label>
                                 ))}
                             </div>
@@ -243,10 +243,10 @@ const ProductDetailPage = () => {
                     {/* Add Ons */}
                     {product.customization?.addOns && product.customization.addOns.length > 0 && (
                         <div>
-                            <label className="block font-semibold text-gray-700 mb-2">{t('product_detail.add_ons')}:</label>
+                            <label className="block font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('product_detail.add_ons')}:</label>
                             <div className="space-y-2">
                                 {product.customization.addOns.map((addon, idx) => (
-                                    <label key={idx} className="flex items-center justify-between p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                                    <label key={idx} className="flex items-center justify-between p-2 border dark:border-gray-700 rounded hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
                                         <div className="flex items-center space-x-2">
                                             <input
                                                 type="checkbox"
@@ -254,9 +254,9 @@ const ProductDetailPage = () => {
                                                 checked={selectedAddOns.some(a => a.name === addon.name)}
                                                 onChange={() => toggleAddOn(addon)}
                                             />
-                                            <span>{addon.name}</span>
+                                            <span className="dark:text-gray-300">{addon.name}</span>
                                         </div>
-                                        <span className="text-gray-600">+₹{addon.price}</span>
+                                        <span className="text-gray-600 dark:text-gray-400">+₹{addon.price}</span>
                                     </label>
                                 ))}
                             </div>
@@ -264,12 +264,12 @@ const ProductDetailPage = () => {
                     )}
                 </div>
 
-                <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-lg">
-                    <label className="font-semibold text-gray-700">{t('product_detail.quantity')}:</label>
+                <div className="flex items-center gap-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                    <label className="font-semibold text-gray-700 dark:text-gray-300">{t('product_detail.quantity')}:</label>
                     <select
                         value={qty}
                         onChange={(e) => setQty(e.target.value)}
-                        className="border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-green-500 outline-none"
+                        className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white p-2 rounded-md focus:ring-2 focus:ring-green-500 outline-none"
                     >
                         {[...Array(product.stock > 0 ? product.stock : 1).keys()].map((x) => (
                             <option key={x + 1} value={x + 1}>
@@ -284,7 +284,7 @@ const ProductDetailPage = () => {
 
                 <div className="space-y-3">
                     {selectedAddOns.length > 0 && (
-                        <div className="flex justify-between text-gray-600 bg-gray-50 p-3 rounded">
+                        <div className="flex justify-between text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 p-3 rounded">
                             <span>{t('product_detail.base_price')}: ₹{product.price}</span>
                             <span>+ {t('product_detail.add_ons')}: ₹{selectedAddOns.reduce((a, c) => a + c.price, 0)}</span>
                         </div>
@@ -317,7 +317,7 @@ const ProductDetailPage = () => {
 
                 {/* Delivery Schedule Info */}
                 {product.availabilityTime && (
-                    <p className="text-center text-sm text-gray-500 mt-2">
+                    <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-2">
                         <span className="inline-block mr-1">🕒</span>
                         {t('product_detail.available_for')}: <strong>{product.availabilityTime}</strong>
                     </p>
@@ -325,24 +325,24 @@ const ProductDetailPage = () => {
             </div>
 
             {/* Reviews Section */}
-            <div className="w-full md:w-full mt-12 bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">{t('product_detail.reviews')}</h2>
+            <div className="w-full md:w-full mt-12 bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-8 border border-gray-100 dark:border-gray-700">
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">{t('product_detail.reviews')}</h2>
 
-                {product.reviews.length === 0 && <p className="text-gray-500 italic">{t('product_detail.no_reviews')}</p>}
+                {product.reviews.length === 0 && <p className="text-gray-500 dark:text-gray-400 italic">{t('product_detail.no_reviews')}</p>}
 
                 <div className="space-y-6 mb-8">
                     {product.reviews.map((review) => (
-                        <div key={review._id} className="border-b pb-4">
+                        <div key={review._id} className="border-b dark:border-gray-700 pb-4">
                             <div className="flex items-center justify-between mb-2">
-                                <span className="font-bold text-gray-800">{review.name}</span>
+                                <span className="font-bold text-gray-800 dark:text-white">{review.name}</span>
                                 <div className="flex text-yellow-500">
                                     {[...Array(5)].map((_, i) => (
                                         <span key={i}>{i < review.rating ? '★' : '☆'}</span>
                                     ))}
                                 </div>
                             </div>
-                            <p className="text-gray-600">{review.comment}</p>
-                            <p className="text-xs text-gray-400 mt-1">{new Date(review.createdAt).toLocaleDateString()}</p>
+                            <p className="text-gray-600 dark:text-gray-300">{review.comment}</p>
+                            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{new Date(review.createdAt).toLocaleDateString()}</p>
                         </div>
                     ))}
                 </div>

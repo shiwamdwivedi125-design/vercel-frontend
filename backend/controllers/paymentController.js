@@ -76,6 +76,11 @@ const verifyPayment = asyncHandler(async (req, res) => {
         if (orderId) {
             const order = await Order.findById(orderId);
             if (order) {
+                // IDOR PROTECTION: Ensure order belongs to current user
+                if (order.user.toString() !== req.user._id.toString()) {
+                    res.status(401);
+                    throw new Error('Payment verification failed: Order mismatch');
+                }
                 order.isPaid = true;
                 order.paidAt = Date.now();
                 order.paymentResult = {

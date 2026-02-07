@@ -40,18 +40,18 @@ const HomePage = () => {
     };
 
     return (
-        <div className="space-y-24 pb-20">
+        <div className="space-y-12 md:space-y-24 pb-20">
             {/* Hero Section */}
-            <section className="relative min-h-[600px] flex items-center rounded-[3rem] overflow-hidden bg-green-900 border border-white/10 shadow-3xl animate-fade-in group">
+            <section className="relative min-h-[500px] md:min-h-[600px] flex items-center rounded-3xl md:rounded-[3rem] overflow-hidden bg-green-900 border border-white/10 shadow-3xl animate-fade-in group mx-2 md:mx-0">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dust.png')] opacity-20"></div>
 
                 {/* Background Blobs */}
                 <div className="absolute top-0 right-0 -mr-40 -mt-40 w-1/2 h-1/2 bg-green-500 rounded-full opacity-20 blur-[120px] group-hover:opacity-30 transition-opacity duration-1000"></div>
                 <div className="absolute bottom-0 left-0 -ml-40 -mb-40 w-1/2 h-1/2 bg-yellow-500 rounded-full opacity-10 blur-[100px] group-hover:opacity-20 transition-opacity duration-1000"></div>
 
-                <div className="relative container mx-auto px-6 md:px-16 flex flex-col md:flex-row items-center gap-12 py-12 md:py-16">
+                <div className="relative container mx-auto px-4 md:px-16 flex flex-col md:flex-row items-center gap-8 md:gap-12 py-10 md:py-16">
                     <div className="md:w-3/5 space-y-6 md:space-y-8 text-center md:text-left">
-                        <div className="inline-flex items-center gap-2 px-6 py-2 glass rounded-full text-green-100 font-bold text-xs md:text-sm tracking-widest animate-bounce mx-auto md:mx-0">
+                        <div className="inline-flex items-center gap-2 px-6 py-2 glass rounded-full text-green-100 font-bold text-[10px] md:text-sm tracking-widest animate-bounce mx-auto md:mx-0">
                             <span className="flex h-2 w-2 rounded-full bg-green-400"></span>
                             {t('home.hero_badge') || 'AUTHENTIC & ORGANIC'}
                         </div>
@@ -76,12 +76,12 @@ const HomePage = () => {
                         </div>
                     </div>
                     <div className="md:w-2/5 flex justify-center w-full">
-                        <div className="relative group w-full max-w-[320px] md:max-w-[500px]">
+                        <div className="relative group w-full px-4 md:px-0">
                             <div className="absolute inset-0 bg-white/20 rounded-full blur-3xl scale-125 animate-pulse"></div>
                             <img
                                 src="/images/home_hero.png"
                                 alt="Dharti Hero"
-                                className="relative w-full drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)] transform hover:scale-105 transition-transform duration-700 hover:rotate-2"
+                                className="relative w-full h-auto drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)] transform hover:scale-105 transition-transform duration-700 hover:rotate-2"
                             />
                         </div>
                     </div>
@@ -89,8 +89,8 @@ const HomePage = () => {
             </section>
 
             {/* 🤖 AI Chef Recommendation Section */}
-            <section className="container mx-auto px-4 !mt-12">
-                <div className="bg-gradient-to-r from-green-900 to-green-800 rounded-[3rem] p-8 md:p-12 relative overflow-hidden shadow-2xl border border-white/10 group">
+            <section className="container mx-auto px-2 md:px-4 !mt-8 md:!mt-12">
+                <div className="bg-gradient-to-r from-green-900 to-green-800 rounded-3xl md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden shadow-2xl border border-white/10 group">
                     <div className="absolute top-0 right-0 w-96 h-96 bg-green-500 rounded-full blur-[150px] opacity-20 group-hover:opacity-30 transition duration-1000"></div>
                     <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
                         <div className="md:w-1/2 space-y-6 text-center md:text-left">
@@ -137,13 +137,13 @@ const HomePage = () => {
             <section className="container mx-auto px-4">
                 <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-6">
                     <div className="text-center md:text-left space-y-2">
-                        <h2 className="text-4xl md:text-5xl font-black text-green-950 tracking-tighter capitalize leading-tight">{t('home.categories_title_1')} <span className="text-green-600 italic">{t('home.categories_title_2')}</span></h2>
-                        <p className="text-gray-500 font-medium text-lg">{t('home.categories_subtitle')}</p>
+                        <h2 className="text-4xl md:text-5xl font-black text-green-950 dark:text-white tracking-tighter capitalize leading-tight">{t('home.categories_title_1')} <span className="text-green-600 italic">{t('home.categories_title_2')}</span></h2>
+                        <p className="text-gray-500 dark:text-gray-400 font-medium text-lg">{t('home.categories_subtitle')}</p>
                     </div>
                     <div className="h-px bg-gray-100 flex-grow mx-8 hidden md:block"></div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
                     {[
                         { name: 'Breakfast / Dosa', icon: '🥞', color: 'from-amber-400 to-orange-500', label: 'Morning Fresh' },
                         { name: 'Village Snacks', icon: '🍪', color: 'from-orange-400 to-red-600', label: 'Handmade' },
@@ -170,17 +170,17 @@ const HomePage = () => {
                 <div className="flex justify-between items-end mb-16 border-b-4 border-green-600/10 pb-8">
                     <div className="space-y-2">
                         <span className="text-green-600 font-black tracking-widest text-xs uppercase">{t('home.featured_badge')}</span>
-                        <h2 className="text-4xl md:text-5xl font-black text-green-950 tracking-tighter">{t('home.featured_title_1')} <span className="text-green-600 italic">{t('home.featured_title_2')}</span></h2>
+                        <h2 className="text-4xl md:text-5xl font-black text-green-950 dark:text-white tracking-tighter">{t('home.featured_title_1')} <span className="text-green-600 italic">{t('home.featured_title_2')}</span></h2>
                     </div>
                     <Link to="/products" className="hidden sm:flex items-center gap-2 bg-green-50 text-green-700 px-6 py-3 rounded-full font-black hover:bg-green-600 hover:text-white transition-all duration-300">
                         {t('home.view_all')} <span className="text-xl">→</span>
                     </Link>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-10">
                     {products.slice(0, 4).map((product) => (
-                        <Link key={product._id} to={`/product/${product._id}`} className="group relative bg-white rounded-[2.5rem] overflow-hidden shadow-soft hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col h-full">
-                            <div className="relative h-72 overflow-hidden">
+                        <Link key={product._id} to={`/product/${product._id}`} className="group relative bg-white dark:bg-gray-800 rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-soft hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-700 flex flex-col h-full">
+                            <div className="relative aspect-square overflow-hidden">
                                 <img
                                     src={product.image}
                                     alt={product.name}
@@ -203,13 +203,13 @@ const HomePage = () => {
                                 </button>
                             </div>
 
-                            <div className="p-8 flex flex-col flex-grow space-y-4">
+                            <div className="p-5 md:p-8 flex flex-col flex-grow space-y-4">
                                 <div>
-                                    <h3 className="font-extrabold text-2xl text-green-950 tracking-tighter group-hover:text-green-600 transition truncate">{product.name}</h3>
-                                    <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mt-1">{product.source}</p>
+                                    <h3 className="font-extrabold text-2xl text-green-950 dark:text-white group-hover:text-green-600 transition truncate">{product.name}</h3>
+                                    <p className="text-gray-400 dark:text-gray-500 text-xs font-bold uppercase tracking-wider mt-1">{product.source}</p>
                                 </div>
 
-                                <div className="mt-auto pt-6 flex items-center justify-between border-t border-gray-50">
+                                <div className="mt-auto pt-6 flex items-center justify-between border-t border-gray-50 dark:border-gray-700">
                                     <div className="flex flex-col">
                                         <span className="text-gray-400 text-[10px] font-black uppercase tracking-widest">{t('product_detail.price_label')}</span>
                                         <span className="text-3xl font-black text-green-700 tracking-tighter">₹{product.price}</span>

@@ -115,39 +115,37 @@ const resetPassword = async (req, res) => {
             return res.status(400).json({ message: 'Password must be at least 6 characters' });
         }
 
-
         const identifier = email ? email.toLowerCase().trim() : phone.trim();
         const query = email ? { email: identifier, otp } : { phone: identifier, otp };
 
-        try {
-            // Verify OTP again
-            const otpRecord = await OTP.findOne(query).sort({ createdAt: -1 });
+        // Verify OTP
+        const otpRecord = await OTP.findOne(query).sort({ createdAt: -1 });
 
-            if (otpRecord) {
-                // Find user and update password
-                const userQuery = email ? { email: identifier } : { phone: identifier };
-                const user = await User.findOne(userQuery);
-                if (user) {
-                    user.password = newPassword;
-                    await user.save();
-                    // Delete all OTPs for this identifier
-                    await OTP.deleteMany(email ? { email: identifier } : { phone: identifier });
-                }
-
-                return res.status(200).json({
-                    message: 'Password reset successfully. You can now login with your new password.'
-                });
+        if (otpRecord) {
+            // Find user and update password
+            const userQuery = email ? { email: identifier } : { phone: identifier };
+            const user = await User.findOne(userQuery);
+            if (user) {
+                user.password = newPassword;
+                await user.save();
+                // Delete all OTPs for this identifier
+                await OTP.deleteMany(email ? { email: identifier } : { phone: identifier });
             }
 
-            res.status(400).json({ message: 'Invalid or expired OTP' });
-        } catch (error) {
-            console.error('Reset password error:', error);
-            res.status(500).json({ message: 'Failed to reset password' });
+            return res.status(200).json({
+                message: 'Password reset successfully. You can now login with your new password.'
+            });
         }
-    };
 
-    module.exports = {
-        sendOTP,
-        verifyOTP,
-        resetPassword
-    };
+        res.status(400).json({ message: 'Invalid or expired OTP' });
+    } catch (error) {
+        console.error('Reset password error:', error);
+        res.status(500).json({ message: 'Failed to reset password' });
+    }
+};
+
+module.exports = {
+    sendOTP,
+    verifyOTP,
+    resetPassword
+};

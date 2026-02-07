@@ -15,28 +15,28 @@ const CartPage = () => {
     if (cartItems.length === 0) {
         return (
             <div className="text-center py-20">
-                <h2 className="text-2xl font-bold mb-4">{t('cart.empty')}</h2>
-                <Link to="/products" className="text-green-600 hover:underline">{t('cart.go_shopping')}</Link>
+                <h2 className="text-2xl font-bold mb-4 dark:text-white">{t('cart.empty')}</h2>
+                <Link to="/products" className="text-green-600 dark:text-green-400 hover:underline">{t('cart.go_shopping')}</Link>
             </div>
         );
     }
 
     return (
         <div>
-            <h1 className="text-3xl font-bold mb-8">{t('cart.title')}</h1>
+            <h1 className="text-3xl font-bold mb-8 dark:text-white">{t('cart.title')}</h1>
             <div className="flex flex-col md:flex-row gap-8">
                 <div className="md:w-2/3 space-y-4">
                     {cartItems.map((item) => (
-                        <div key={item._id} className="flex justify-between items-center bg-white p-4 rounded-lg shadow-sm">
+                        <div key={item._id} className="flex justify-between items-center bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border dark:border-gray-700">
                             <div className="flex items-center gap-4">
                                 <img src={item.image} alt={item.name} className="h-16 w-16 object-cover rounded-md" />
                                 <div>
-                                    <h3 className="font-bold">{item.name}</h3>
-                                    <p className="text-gray-500">₹{item.price} x {item.qty}</p>
+                                    <h3 className="font-bold dark:text-white">{item.name}</h3>
+                                    <p className="text-gray-500 dark:text-gray-400">₹{item.price} x {item.qty}</p>
 
                                     {/* Customization Display */}
                                     {item.customization && (
-                                        <div className="text-xs text-gray-400 mt-1">
+                                        <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                                             {item.customization.spice && <span className="block">🌶️ {t('product_detail.spice_level')}: {t(`product_detail.${item.customization.spice.toLowerCase()}`)}</span>}
                                             {item.customization.addOns && item.customization.addOns.length > 0 && (
                                                 <span className="block">➕ {item.customization.addOns.map(a => a.name).join(', ')}</span>
@@ -47,8 +47,8 @@ const CartPage = () => {
                             </div>
                             <div className="flex items-center gap-4">
                                 <div className="text-right">
-                                    <span className="block font-bold text-lg">₹{item.price * item.qty}</span>
-                                    {item.customization?.addOns?.length > 0 && <span className="text-xs text-green-600">{t('cart.extra')}</span>}
+                                    <span className="block font-bold text-lg dark:text-white">₹{item.price * item.qty}</span>
+                                    {item.customization?.addOns?.length > 0 && <span className="text-xs text-green-600 dark:text-green-400">{t('cart.extra')}</span>}
                                 </div>
                                 <button
                                     onClick={() => removeFromCart(item._id)}
@@ -61,11 +61,11 @@ const CartPage = () => {
                     ))}
                 </div>
                 <div className="md:w-1/3">
-                    <div className="bg-white p-6 rounded-xl shadow-md space-y-4">
-                        <h2 className="text-xl font-bold border-b pb-4">{t('cart.summary')}</h2>
-                        <div className="flex justify-between text-lg">
+                    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md space-y-4 border dark:border-gray-700">
+                        <h2 className="text-xl font-bold border-b dark:border-gray-700 pb-4 dark:text-white">{t('cart.summary')}</h2>
+                        <div className="flex justify-between text-lg dark:text-gray-300">
                             <span>{t('cart.total')}</span>
-                            <span className="font-bold">₹{total}</span>
+                            <span className="font-bold dark:text-white">₹{total}</span>
                         </div>
                         <button
                             onClick={() => navigate('/checkout')}

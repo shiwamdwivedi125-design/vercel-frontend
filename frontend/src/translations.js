@@ -18,7 +18,9 @@ export const translations = {
             not_supported: "Voice search is not supported in this browser.",
             switch_hi: "Switch to Hindi",
             switch_en: "Switch to English",
-            cart: "Cart"
+            cart: "Cart",
+            phone: "Phone",
+            email: "Email"
         },
         home: {
             hero_badge: "AUTHENTIC & ORGANIC",

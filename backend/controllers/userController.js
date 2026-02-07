@@ -1,17 +1,18 @@
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
 const asyncHandler = require('express-async-handler');
+const { validationResult } = require('express-validator');
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
 // @access  Public
 const authUser = asyncHandler(async (req, res) => {
-    const { email, phone, password } = req.body;
-
-    if (!email && !phone) {
-        res.status(400);
-        throw new Error('Please provide an email or phone number');
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ message: 'Invalid credentials' }); // Generic message
     }
+
+    const { email, phone, password } = req.body;
 
     const query = email ? { email } : { phone };
     const user = await User.findOne(query);
@@ -35,15 +36,12 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, phone, password } = req.body;
-
-    console.log('--- SIGNUP ATTEMPT ---');
-    console.log('Payload:', { name, email, phone, password: '***' });
-
-    if (!name || !email || !password) {
-        res.status(400).json({ message: 'Name, email and password are required' });
-        return;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ message: errors.array()[0].msg });
     }
+
+    const { name, email, phone, password } = req.body;
 
     const trimmedEmail = email.toLowerCase().trim();
     const trimmedPhone = phone ? phone.trim() : undefined;
@@ -56,9 +54,7 @@ const registerUser = asyncHandler(async (req, res) => {
     });
 
     if (userExists) {
-        console.log('Signup failed: User already exists');
-        res.status(400).json({ message: 'User with this email or phone already exists' });
-        return;
+        return res.status(400).json({ message: 'User with this email or phone already exists' });
     }
 
     try {

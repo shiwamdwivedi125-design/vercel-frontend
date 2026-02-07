@@ -7,7 +7,11 @@
 @layer base {
   body {
     font-family: 'Inter', sans-serif;
-    @apply bg-gray-50 text-gray-800 antialiased;
+    @apply bg-gray-50 text-gray-800 antialiased transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply bg-gray-900 text-gray-100;
   }
 
   h1,
@@ -18,6 +22,10 @@
   h6 {
     font-family: 'Outfit', sans-serif;
     @apply tracking-tight;
+  }
+
+  img {
+    @apply max-w-full h-auto;
   }
 }
 
@@ -40,6 +48,10 @@
 
   .glass-dark {
     @apply bg-black/40 backdrop-blur-md border border-white/10;
+  }
+
+  .dark .glass {
+    @apply bg-gray-800/70 backdrop-blur-md border border-gray-700/50;
   }
 
   .gradient-green {

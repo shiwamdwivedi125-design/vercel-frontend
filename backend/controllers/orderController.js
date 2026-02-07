@@ -64,6 +64,11 @@ const getOrderById = asyncHandler(async (req, res) => {
     );
 
     if (order) {
+        // IDOR PROTECTION: Check if order belongs to user or user is admin
+        if (order.user._id.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+            res.status(401);
+            throw new Error('Not authorized to view this order');
+        }
         res.json(order);
     } else {
         res.status(404);
@@ -78,6 +83,11 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
 
     if (order) {
+        // IDOR PROTECTION
+        if (order.user.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+            res.status(401);
+            throw new Error('Not authorized to pay for this order');
+        }
         order.isPaid = true;
         order.paidAt = Date.now();
         order.paymentResult = {
@@ -111,6 +121,11 @@ const cancelOrder = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
 
     if (order) {
+        // IDOR PROTECTION
+        if (order.user.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+            res.status(401);
+            throw new Error('Not authorized to cancel this order');
+        }
         if (order.isDelivered) {
             res.status(400);
             throw new Error('Cannot cancel a delivered order');
@@ -135,6 +150,11 @@ const returnOrder = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
 
     if (order) {
+        // IDOR PROTECTION
+        if (order.user.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+            res.status(401);
+            throw new Error('Not authorized to return this order');
+        }
         if (!order.isDelivered) {
             res.status(400);
             throw new Error('Cannot return an order that is not delivered');

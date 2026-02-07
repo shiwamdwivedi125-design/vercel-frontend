@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('mongo-sanitize');
 
 // 1. .env Configuration
 dotenv.config();
@@ -9,12 +12,30 @@ dotenv.config();
 const app = express();
 
 // 2. Middleware
+app.use(helmet()); // Set security HTTP headers
+app.use(express.json());
+
+// Data sanitization against NoSQL query injection
+app.use((req, res, next) => {
+    req.body = mongoSanitize(req.body);
+    req.query = mongoSanitize(req.query);
+    req.params = mongoSanitize(req.params);
+    next();
+});
+
 app.use(cors({
     origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
-app.use(express.json());
+
+// Global Rate Limiting
+const limiter = rateLimit({
+    max: 100, // Limit each IP to 100 requests per windowMs
+    windowMs: 60 * 60 * 1000, // 1 hour
+    message: 'Too many requests from this IP, please try again in an hour!'
+});
+app.use('/api', limiter);
 
 // 3. Database Connection
 const connectDB = async () => {

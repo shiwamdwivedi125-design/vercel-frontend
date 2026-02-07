@@ -214,9 +214,9 @@ const MyOrdersPage = () => {
     );
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gray-50 py-6 md:py-12 px-2 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
-                <div className="flex justify-between items-center mb-8">
+                <div className="flex justify-between items-center mb-6 md:mb-8 px-2 md:px-0">
                     <h1 className="text-3xl font-bold text-gray-900">{t('orders.title')}</h1>
                     <Link to="/profile" className="text-green-600 hover:text-green-800 font-medium">
                         &larr; {t('orders.back')}
@@ -237,10 +237,10 @@ const MyOrdersPage = () => {
                         </Link>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8">
                         {orders.map((order) => (
-                            <div key={order._id} className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group flex flex-col justify-between">
-                                <div className="p-6 cursor-pointer" onClick={() => handleViewDetailsClick(order)}>
+                            <div key={order._id} className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group flex flex-col justify-between mx-1 md:mx-0">
+                                <div className="p-4 md:p-6 cursor-pointer" onClick={() => handleViewDetailsClick(order)}>
                                     <div className="flex justify-between items-start mb-4">
                                         <div>
                                             <p className="text-xs text-gray-400 font-medium uppercase tracking-wider mb-1">{t('orders.id')}</p>
@@ -259,9 +259,9 @@ const MyOrdersPage = () => {
                                         {order.orderItems.slice(0, 3).map((item, index) => (
                                             <div key={index} className="flex items-center gap-4">
                                                 {item.image ? (
-                                                    <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg shadow-sm border border-gray-100" />
+                                                    <img src={item.image} alt={item.name} className="w-16 h-16 md:w-20 md:h-20 object-cover rounded-xl shadow-md border border-gray-100" />
                                                 ) : (
-                                                    <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 text-xs">No Img</div>
+                                                    <div className="w-16 h-16 md:w-20 md:h-20 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 text-xs">No Img</div>
                                                 )}
                                                 <div className="flex-1">
                                                     <p className="font-semibold text-gray-800 text-sm line-clamp-1">{item.name}</p>
@@ -278,7 +278,7 @@ const MyOrdersPage = () => {
                                     </div>
                                 </div>
 
-                                <div className="bg-gray-50 px-6 py-4 flex justify-between items-center border-t border-gray-100 h-20">
+                                <div className="bg-gray-50 px-4 md:px-6 py-4 flex justify-between items-center border-t border-gray-100 h-20">
                                     <div className="text-left">
                                         <p className="text-xs text-gray-400">{t('orders.total')}</p>
                                         <p className="text-xl font-bold text-green-700">₹{order.totalPrice}</p>

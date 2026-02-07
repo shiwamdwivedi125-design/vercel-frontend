@@ -1,11 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const Contact = require('../models/Contact'); // Ensure filename matches case
+const { protect, admin } = require('../middleware/authMiddleware');
+const rateLimit = require('express-rate-limit');
+
+// Rate limiter for contact submissions (prevent spam)
+const contactLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 5, // Limit each IP to 5 messages per hour
+    message: 'Too many contact inquiries, please try again after an hour.'
+});
 
 // @desc    Submit a new contact message
 // @route   POST /api/contact
 // @access  Public
-router.post('/', async (req, res) => {
+router.post('/', contactLimiter, async (req, res) => {
     try {
         const { name, email, phone, message } = req.body;
 
@@ -68,10 +77,10 @@ Please contact the user back soon.
     }
 });
 
-// @desc    Get all contact messages (Admin only - placeholder logic)
+// @desc    Get all contact messages (Admin only)
 // @route   GET /api/contact
-// @access  Private
-router.get('/', async (req, res) => {
+// @access  Private/Admin
+router.get('/', protect, admin, async (req, res) => {
     try {
         const contacts = await Contact.find().sort({ createdAt: -1 });
         res.json(contacts);
