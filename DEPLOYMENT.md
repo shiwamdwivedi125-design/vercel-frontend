@@ -34,7 +34,7 @@ Follow these steps to put your project online (Production). We recommend using *
    - **Name**: `dharti-ka-swad`
    - **Environment**: `Node`
    - **Root Directory**: Leave blank (root).
-   - **Build Command**: `npm install && npm run build-frontend`
+   - **Build Command**: `npm run build`
    - **Start Command**: `npm start`
 4. Click **Advanced** to add **Environment Variables**:
    - `MONGO_URI`: (Your MongoDB connection string from Step 2)
